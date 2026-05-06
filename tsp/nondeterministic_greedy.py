@@ -42,7 +42,7 @@ class NonDeterministicGreedyStrategy(Strategy):
             # sort the candidates using a heap sort, then pick the 3 smallest ones
             best3 = heapq.nsmallest(3, candidates)
 
-            # pick the next item randomly
+            # pick the next item randomly of the 3 best candidates
             best = random.choice(best3)
 
             # update the distance 

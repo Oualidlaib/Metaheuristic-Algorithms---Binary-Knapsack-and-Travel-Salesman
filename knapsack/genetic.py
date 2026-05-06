@@ -5,18 +5,24 @@ import random
 
 class GeneticStrategy(Strategy):
 
+    # The select operator
     def selectOperator(self, solutions):
         """
         Tournament selection: keeps 50% of the population.
         """
         selected = []
+
+        # target is to select 50% of the population
         target = len(solutions) // 2
 
         for _ in range(target):
+
+            # randomly pick 2 solutions
             i, j = np.random.choice(len(solutions), size=2, replace=False)
             p_i = solutions[i]["profit"]
             p_j = solutions[j]["profit"]
             
+            # Select the one with bigger profit
             winner = solutions[i] if p_i > p_j else solutions[j]
             selected.append(winner)
         
@@ -54,7 +60,7 @@ class GeneticStrategy(Strategy):
 
     def crossover(self, instance, solutions):
         """
-        Ordered Crossover (OX) with a single cut-point (split into 2 segments).
+        Simple Ordered Crossover (OX) with a single cut-point (split into 2 segments).
         """
         children = []
 
@@ -107,7 +113,8 @@ class GeneticStrategy(Strategy):
             # Gene-level mutation
             for i in range(len(solution)):
                 if random.random() < mutation_rate:
-                    solution[i] = 1 - solution[i]  # Flip bit
+                    # Flip bit
+                    solution[i] = 1 - solution[i]  
                     mutated = True
             
             # Repair only if a mutation actually occurred 
@@ -124,6 +131,7 @@ class GeneticStrategy(Strategy):
         return min(solutions, key=lambda s: s["distance"])
 
 
+    # Helper function just to make the solutions as a list of dictionary objects
     def format_children(self, children, weights, values):
         """
         Transforms a list of binary arrays into a list of dictionaries 
@@ -173,9 +181,11 @@ class GeneticStrategy(Strategy):
 
             children = self.format_children(children, instance["weights"], instance["profits"])
 
-            # Merge selected parents + children, cap at 100
+            # Merge selected parents + children
             combined = selected + children
             combined.sort(key=lambda s: s["profit"])
+
+            # keep only 100 individuals
             solutions = combined[:100]
         
 

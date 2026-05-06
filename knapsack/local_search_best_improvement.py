@@ -6,6 +6,12 @@ from knapsack.nondeterministic_greedy import NonDeterministicGreedyStrategy
 class LocalSearchBestImprovement(Strategy):
     
     def generateAllFeasibleSolutions(self, instance, solution):
+        """
+        Generate all feasible neighboring solutions by exploring move types.
+        Each neighbor is represented as a move tuple (drop_idxs, add_idxs),
+        encoding only the *change* (not the full solution vector), so that
+        the actual decision array is reconstructed lazily when needed.
+        """
 
         c_decision = solution["decision"]
         W_cap = instance["capacity"]
@@ -33,6 +39,9 @@ class LocalSearchBestImprovement(Strategy):
                 feasibleNeighbors.append({
                     "profit": solution["profit"] + p_delta,
                     "weight": solution["weight"] + w_delta,
+
+                    # encode the neighbor by a move, the caller should reconstruct the neighbor,
+                    # which is more efficient
                     "move": (drop_idxs, add_idxs) 
                 })
 

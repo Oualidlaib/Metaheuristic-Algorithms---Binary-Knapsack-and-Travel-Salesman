@@ -58,9 +58,12 @@ class SimulatedAnnealing(Strategy):
 
         n_items = instance["profits"].shape[0]
         W = instance["capacity"]
+
+        # generate an initial solution
         nondeterministic_greedy = NonDeterministicGreedyStrategy()
         solution = nondeterministic_greedy.solve(instance)
 
+        # initialize the temperature
         temperature = 100.0
 
         best_so_far = solution.copy()
@@ -87,7 +90,8 @@ class SimulatedAnnealing(Strategy):
                         accepted = True
                 
                 if accepted:
-
+                    
+                    # update the current solution
                     drops, adds = neighbor["move"]
 
                     for idx in drops: 
@@ -106,6 +110,7 @@ class SimulatedAnnealing(Strategy):
                             "decision": solution["decision"].copy() 
                         }
             
+            # cool the temperature
             temperature = self.cooling(temperature)
 
         return {

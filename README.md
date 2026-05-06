@@ -54,7 +54,20 @@ project-root/
 
 ---
 
-## 4. Running the Project
+## 4. Project Architecture — Strategy Pattern
+
+The project is built around the **Strategy design pattern**. A common `Strategy` interface defines a `solve()` method, and each metaheuristic algorithm is implemented as a concrete class that fulfills this contract.
+
+The algorithms are organized by problem under their respective folders:
+
+- `tsp/` — contains the algorithm classes for the Travelling Salesman Problem
+- `knapsack/` — contains the algorithm classes for the Binary Knapsack Problem
+
+In each folder, every class corresponds to a specific metaheuristic algorithm, and its name directly reflects the algorithm being used (e.g. a class named `SimulatedAnnealing` implements Simulated Annealing). All of them implement the `solve()` method defined by the `Strategy` interface, making it straightforward to swap or extend algorithms without modifying the rest of the codebase.
+
+---
+
+## 5. Running the Project
 
 ### Step 1 — Generate TSP Adjacency Matrices
 
@@ -88,7 +101,7 @@ python3 main.py --problem knapsack
 
 ---
 
-## 5. Viewing Results Without Running the Code
+## 6. Viewing Results Without Running the Code
 
 If you want to consult the results without running the code, pre-computed result files are available at the root of the project:
 
